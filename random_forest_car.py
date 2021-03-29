@@ -39,7 +39,7 @@ test_y = test_y["class"].values.tolist()
 
 
 class RandomForest(object):
-    def __init__(self, tree_size = 1, sample_size = 100, depth = 4, random_state = 2):
+    def __init__(self, tree_size = 20, sample_size = 100, depth = 10, random_state = 2):
         self.tree_size = tree_size
         self.sample_size = sample_size
         self.depth = depth
@@ -57,6 +57,7 @@ class RandomForest(object):
 
     def fit(self, X, Y):
         for i in range(self.tree_size):
+            #print(i)
             dt = DecisionTree()
             x, y = self.bootstrap_sample(X, Y, self.sample_size)
             dt.fit(x, y, self.depth)
@@ -84,13 +85,32 @@ class RandomForest(object):
                 m = i
         return unique[m]
 
-rf = RandomForest(tree_size = 1, sample_size = int(len(train_x)*2/3), depth = 50) # int(len(train_x)*2/3)
+rf = RandomForest(tree_size = 1, sample_size = int(len(train_x)*2/3), depth = 3) # int(len(train_x)*2/3)
 
 rf.fit(train_x, train_y)
 final = rf.predict(test_x)
 
-print(final)
+# uncommand the following 2 lines to show the final prediction class and it true class
+"""
+#print(final)
+print("Predicted result:")
+for unique in np.unique(final):
+    count = 0
+    for element in range(len(final)):
+        if final[element] == unique:
+            count += 1
+    print("# of %d: %d"%(unique,count))
+print("----------------------")
+#print(test_y)
+print("True result:")
+for unique in np.unique(test_y):
+    count = 0
+    for element in range(len(test_y)):
+        if test_y[element] == unique:
+            count += 1
+    print("# of %d: %d"%(unique,count))
+"""
 
-total = len(test_y)
+total = len(final)
 correct = np.count_nonzero(np.array(final) == np.array(test_y))
 print("result: %d / %d"%(correct, total))

@@ -71,7 +71,7 @@ test_y_list = test_y['Species'].to_list()
 
 rf.fit(train_x, train_y)
 final = rf.predict(test_x)
-print(final)
+#print(final)
 
 total = len(test_y_list)
 correct = np.count_nonzero(np.array(final) == np.array(test_y_list))
